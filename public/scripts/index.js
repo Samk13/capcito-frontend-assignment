@@ -27,6 +27,7 @@ let random_id = function() {
 };
 
 // clear existing HTML on table body
+
 while (tableBody.firstChild) {
   tableBody.removeChild(tableBody.firstChild);
 }
@@ -34,6 +35,7 @@ while (tableBody.firstChild) {
 //JQuery
 
 $(document).ready(function() {
+
   // submit new user
   let index = () => tableBody.childElementCount;
 
@@ -80,7 +82,8 @@ $(document).ready(function() {
       .closest("tr")
       .remove();
 
-    // we can write a loop to update the childrens index if needed
+    // we can write a loop to update the children index if needed here 
+
   });
 
   // edit button function
@@ -105,7 +108,7 @@ $(document).ready(function() {
       .closest("tr")
       .find("td:eq(3)")
       .text();
-    console.log(`${name} ${age} ${email}`);
+    // console.log(`${name} ${age} ${email}`);
 
     $(this)
       .closest("tr")
@@ -124,14 +127,14 @@ $(document).ready(function() {
       .parents("tr")
       .find("div")
       .prepend(
-        `<button class='w-5 h-5 stroke-current btn-updateIn'>${editIcon}</button>
+        `<button class='w-5 h-5 stroke-current btn-updateIn mr-2'>${editIcon}</button>
         
         `
       );
     $(this).hide();
   });
 
-  //cancelBtn  Function
+  //UpdateBtn  Function
 
   $("body").on("click", ".btn-updateIn", function() {
     let name = $(this)
@@ -146,51 +149,31 @@ $(document).ready(function() {
       .parents("tr")
       .find("input[name='edit_email']")
       .val();
-  
-      $(this)
-    .parents("tr")
-    .find("td:eq(1)")
-    .text(name);
+
+    $(this)
+      .parents("tr")
+      .find("td:eq(1)")
+      .text(name);
     $(this)
       .parents("tr")
       .find("td:eq(2)")
       .text(age);
-  $(this)
-    .parents("tr")
-    .find("td:eq(3)")
-    .text(email);
-  
+    $(this)
+      .parents("tr")
+      .find("td:eq(3)")
+      .text(email);
 
-  $(this)
-    .parents("tr")
-    .find(".btnEdit")
-    .show();
-  $(this)
-    .parents("tr")
-    .find(".btn-cancel")
-    .remove();
-  $(this)
-    .parents("tr")
-    .find(".btn-updateIn")
-    .remove();
-  
-    });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    $(this)
+      .parents("tr")
+      .find(".btnEdit")
+      .show();
+    $(this)
+      .parents("tr")
+      .find(".btn-cancel")
+      .remove();
+    $(this)
+      .parents("tr")
+      .find(".btn-updateIn")
+      .remove();
+  });
 });
