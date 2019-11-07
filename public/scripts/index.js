@@ -2,6 +2,18 @@ const form = document.getElementById("userForm");
 const table = document.getElementById("userTable");
 
 const tableBody = document.querySelector("#userTable > tbody");
+const trashIcon = `<svg class="w-5 h-5 stroke-current" 
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" 
+                    fill="none" stroke-width="1" stroke-linecap="round" 
+                    stroke-linejoin="round" class="feather feather-trash-2">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    <line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>`;
+
+const editIcon = `<svg class="w-5 h-5 stroke-current" xmlns="http://www.w3.org/2000/svg" 
+                    viewBox="0 0 24 24" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" 
+                    class="feather feather-edit-3"><path d="M12 20h9"></path>
+                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>`;
 
 // generate randomNumerID
 let random_id = function() {
@@ -23,6 +35,7 @@ while (tableBody.firstChild) {
 
 $(document).ready(function() {
   // submit new user
+  let index = () => tableBody.childElementCount;
 
   $("#userForm").submit(function(e) {
     e.preventDefault();
@@ -30,21 +43,21 @@ $(document).ready(function() {
     let age = $("input[name='age']").val();
     let email = $("input[name='email']").val();
     let id = random_id();
-    let index = tableBody.childElementCount;
+    let index = () => tableBody.childElementCount;
 
     $("#userTable > tbody").append(`
       <tr id="${id}">
-        <td class="border-t w-1/12 p-2">${index + 1}</td>
+        <td class="border-t w-1/12 p-2">${index() + 1}</td>
         <td class="border-t w-3/12 p-2">${name}</td>
         <td class="border-t w-2/12 p-2">${age}</td>
         <td class="border-t w-4/12 p-2">${email}</td>
         <td class="border-t w-auto p-2">
          <div class="flex justify-end">
             <a href="#" class="mr-2 btnEdit">
-                <svg class="w-5 h-5 stroke-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                ${editIcon}
             </a>
             <a href="#" class="btnTrash">
-                <svg class="w-5 h-5 stroke-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                ${trashIcon}
             </a>  
          </div>
         </td>
@@ -66,6 +79,8 @@ $(document).ready(function() {
     $(this)
       .closest("tr")
       .remove();
+
+    // we can write a loop to update the childrens index if needed
   });
 
   // edit button function
@@ -105,27 +120,61 @@ $(document).ready(function() {
       .find("td:eq(3)")
       .html(`<input name="edit_email" value= '${email}'>`);
 
-
     $(this)
       .parents("tr")
       .find("div")
       .prepend(
-        `<button class='w-5 h-5 stroke-current btn-update'>U</button>
-        <button class='w-5 h-5  mr-2 btn-cancel'>C</button>
+        `<button class='w-5 h-5 stroke-current btn-updateIn'>${editIcon}</button>
+        
         `
       );
     $(this).hide();
-
   });
 
   //cancelBtn  Function
 
+  $("body").on("click", ".btn-updateIn", function() {
+    let name = $(this)
+      .parents("tr")
+      .find("input[name='edit_name']")
+      .val();
+    let age = $(this)
+      .parents("tr")
+      .find("input[name='edit_age']")
+      .val();
+    let email = $(this)
+      .parents("tr")
+      .find("input[name='edit_email']")
+      .val();
+  
+      $(this)
+    .parents("tr")
+    .find("td:eq(1)")
+    .text(name);
+    $(this)
+      .parents("tr")
+      .find("td:eq(2)")
+      .text(age);
+  $(this)
+    .parents("tr")
+    .find("td:eq(3)")
+    .text(email);
+  
 
-
-
-
-
-
+  $(this)
+    .parents("tr")
+    .find(".btnEdit")
+    .show();
+  $(this)
+    .parents("tr")
+    .find(".btn-cancel")
+    .remove();
+  $(this)
+    .parents("tr")
+    .find(".btn-updateIn")
+    .remove();
+  
+    });
 
 
 
