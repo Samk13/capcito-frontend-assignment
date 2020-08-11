@@ -9,6 +9,6 @@
     "serve": "serve ./public"
   },
   "devDependencies": {
-    "serve": "^11.2.0"
+    "serve": "^11.3.2"
   }
 }
